@@ -29,6 +29,8 @@ public class CarInputController : MonoBehaviour
     public Slider rpmSlider;
     public int currentGear;
 
+    public Slider fuelSlider;
+
     public float[] gearRatios;
     public float differentialRatio;
     private float currentTorque;
@@ -44,6 +46,7 @@ public class CarInputController : MonoBehaviour
     void Awake()
     {
         car = GetComponent<Car>();
+        fuelSlider.maxValue = car.maxFuelInSeconds;
     }
 
     // Update is called once per frame
@@ -121,6 +124,12 @@ public class CarInputController : MonoBehaviour
                 }
                 cameras[3].SetActive(true);
             }
+    }
+
+    private void FixedUpdate()
+    {
+        car.fuelAmount = Mathf.MoveTowards(car.fuelAmount, 0, Time.deltaTime);
+        fuelSlider.value = car.fuelAmount;
     }
 
     float CalculateTorque()

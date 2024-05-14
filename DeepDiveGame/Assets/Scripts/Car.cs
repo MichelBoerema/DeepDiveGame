@@ -8,6 +8,9 @@ using UnityEngine.UI;
 
 public class Car : MonoBehaviour
 {
+    public float maxFuelInSeconds = 180f;
+    public float fuelAmount;
+
     //public Transform centerOfMass;
     public float motorTorque = 500f;
     public float maxSteer = 20f;
@@ -15,7 +18,7 @@ public class Car : MonoBehaviour
     public float brakeForce = 10000f;
     public float steer { get; set; }
     public float throttle { get; set; }
-    private Rigidbody _rigidbody;
+    public Rigidbody _rigidbody;
     public Wheel[] wheels;
 
     [Header("Speedometer")]
@@ -28,6 +31,7 @@ public class Car : MonoBehaviour
 
     void Start()
     {
+        fuelAmount = maxFuelInSeconds;
         wheels = GetComponentsInChildren<Wheel>();
         _rigidbody = GetComponent<Rigidbody>();
         //_rigidbody.centerOfMass = centerOfMass.localPosition;
@@ -46,6 +50,7 @@ public class Car : MonoBehaviour
         //    //arrow.localEulerAngles =
         //    //    new Vector3(0, 0, Mathf.Lerp(minSpeedArrowAngle, maxSpeedArrowAngle, speed / maxSpeed));
     }
+
     public void ChangeSpeed(float throttle, float input)
     {
         foreach (var wheel in wheels)
