@@ -41,6 +41,8 @@ public class CarInputController : MonoBehaviour
     public float decreaseGearRPM;
     public float changeGearTime = 0.5f;
 
+    public AudioSource Audio;
+    public AudioSource Audio2;
     void Awake()
     {
         car = GetComponent<Car>();
@@ -60,11 +62,15 @@ public class CarInputController : MonoBehaviour
             if (gearState == GearState.Neutral)
             {
                 clutch = 0;
+                Audio.volume = 0.3f;
                 if (Mathf.Abs(Forwards) > 0) gearState = GearState.Running;
+                
             }
             else
             {
+                Audio.volume = 1f;
                 clutch = Input.GetKey(KeyCode.LeftShift) ? 0 : Mathf.Lerp(clutch, 1, Time.deltaTime);
+                
             }
         }
         else
@@ -121,6 +127,15 @@ public class CarInputController : MonoBehaviour
                 }
                 cameras[3].SetActive(true);
             }
+
+        if(Steering != 0 && car.currentspeed >= 100)
+        {
+            Audio2.mute = false;
+        }
+        else
+        {
+            Audio2.mute = true;
+        }
     }
 
     float CalculateTorque()
