@@ -29,7 +29,7 @@ public class pauseMenu : MonoBehaviour
     public void Pause_ToMenuButton()
     {
         print("Loading Menu Scene");
-        SceneManager.LoadScene("KevinMenu", LoadSceneMode.Single); //Verander naar beter ding
+        SceneManager.LoadScene("KevinMenu", LoadSceneMode.Single);
     }
 
     public void Pause_ExitButton()
