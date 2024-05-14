@@ -35,8 +35,8 @@ public class Car : MonoBehaviour
     void Update()
     {
         StartCoroutine(CalculateSpeed());
-            // 3.6f to convert in kilometers
-            // ** The speed must be clamped by the car controller **
+        // 3.6f to convert in kilometers
+        // ** The speed must be clamped by the car controller **
         //speed = target.velocity.magnitude * 3.6f;
 
         //if (speedLabel != null)
@@ -87,4 +87,22 @@ public class Car : MonoBehaviour
         yield return new WaitForFixedUpdate();
         currentspeed = (lastPosition - transform.position).magnitude / Time.deltaTime * 4f;
     }
+
+    public void OnCollisionEnter(Collision collision)
+    {
+        print(collision.gameObject.tag);
+
+        if (collision.gameObject.tag == "Grass")
+        {
+            Debug.Log("Je moeder");
+            target.drag = 0.5F;
+        }
+        else
+        {
+            target.drag = 0.0F;
+        }
+
+
+    }
+
 }
