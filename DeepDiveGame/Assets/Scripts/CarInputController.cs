@@ -18,6 +18,7 @@ public class CarInputController : MonoBehaviour
     public float Forwards;
     public float Steering;
     public float braking;
+    public float handBrake;
 
     public GameObject[] cameras;
 
@@ -79,13 +80,17 @@ public class CarInputController : MonoBehaviour
         {
             car.activatebrake(braking);
         }
-        if (Input.GetKey(KeyCode.Space))
-        {
-            car.activatebrake(braking);
-        }
         else
         {
             car.disablebrake(braking);
+        }
+        if (Input.GetKey(KeyCode.Space))
+        {
+            car.activatebrake(handBrake);
+        }
+        else
+        {
+            car.disablebrake(handBrake);
         }
 
 
