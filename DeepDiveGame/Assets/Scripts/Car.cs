@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
-using TMPro;
 using UnityEngine.UI;
 
 public class Car : MonoBehaviour
@@ -23,6 +22,7 @@ public class Car : MonoBehaviour
 
     [Header("UI")]
     public RectTransform arrow; // The arrow in the speedometer
+    [SerializeField] GameObject Warning_lable;
 
     private float speed = 0.0f;
 
@@ -96,10 +96,12 @@ public class Car : MonoBehaviour
         {
             Debug.Log("Je moeder");
             target.drag = 0.5F;
+            Warning_lable.SetActive(true);
         }
         else
         {
             target.drag = 0.0F;
+            Warning_lable.SetActive(false);
         }
 
 
