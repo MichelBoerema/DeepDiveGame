@@ -28,10 +28,10 @@ public class menuCar : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (transform.position.y <= 0.01f && cooldown <= 0)
+        if (cooldown <= 0)
         {
-            cooldown = 0.2f;
-            rb.AddForce(0, 200, 0);
+            cooldown = 0.3f;
+            rb.velocity = Vector3.up * 1.5f;
 
             var newAudio = Instantiate(audioObject, transform);
             Destroy(newAudio, 4);
