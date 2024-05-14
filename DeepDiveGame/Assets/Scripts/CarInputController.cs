@@ -76,6 +76,14 @@ public class CarInputController : MonoBehaviour
         currentTorque = CalculateTorque();
         car.ChangeSpeed(currentTorque, Forwards);
         car.Turn(Steering);
+        //if (Input.GetKey(KeyCode.S))
+        //{
+        //    car.activatebrake(braking);
+        //}
+        //else
+        //{
+        //    car.disablebrake(braking);
+        //}
         if (Input.GetKey(KeyCode.S))
         {
             car.activatebrake(braking);
@@ -83,14 +91,6 @@ public class CarInputController : MonoBehaviour
         else
         {
             car.disablebrake(braking);
-        }
-        if (Input.GetKey(KeyCode.Space))
-        {
-            car.activatebrake(handBrake);
-        }
-        else
-        {
-            car.disablebrake(handBrake);
         }
 
 
@@ -156,7 +156,7 @@ public class CarInputController : MonoBehaviour
             {
                 foreach (var wheel in car.wheels)
                 {
-                    wheelRPM = Mathf.Abs((wheel.Torque) / 2f) * gearRatios[currentGear] * differentialRatio;
+                    wheelRPM = Mathf.Abs((wheel.Torque) / 4f) * gearRatios[currentGear] * differentialRatio;
                 }
                 
                 RPM = Mathf.Lerp(RPM, Mathf.Max(idleRPM - 100, wheelRPM), Time.deltaTime * 3f);
