@@ -128,7 +128,7 @@ public class CarInputController : MonoBehaviour
                 cameras[3].SetActive(true);
             }
 
-        if(Steering != 0 && car.currentspeed >= 100)
+        if(Steering != 0 && car.currentspeed >= 80)
         {
             Audio2.mute = false;
         }
