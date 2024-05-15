@@ -75,7 +75,7 @@ public class Car : MonoBehaviour
     {
         foreach (var wheel in wheels)
         {
-            wheel.brakeForce = brakeForce;
+            wheel.brakeForce = brake;
         }
     }
     public void disablebrake(float brake)
