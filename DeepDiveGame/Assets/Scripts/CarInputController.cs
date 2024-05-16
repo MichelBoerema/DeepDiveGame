@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
@@ -51,6 +52,8 @@ public class CarInputController : MonoBehaviour
     [SerializeField] private bool usingKeyBoard = true;
     [SerializeField] private bool usingController = false;
     [SerializeField] private bool usingWheel = false;
+
+    public Material brakeLight;
 
     void Awake()
     {
@@ -116,20 +119,13 @@ public class CarInputController : MonoBehaviour
             Forwards = Input.GetAxis("Vertical");
             Steering = Input.GetAxis("Horizontal");
 
-            if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.Space))
+            if (Input.GetKey(KeyCode.S))
             {
-                if (Input.GetKey(KeyCode.S))
-                {
-                    car.activatebrake(braking);
-                }
-                if (Input.GetKey(KeyCode.Space))
-                {
-                    car.activatebrake(handBrake);
-                }
+                brakeInput = 1;
             }
             else
             {
-                car.disablebrake(handBrake);
+                brakeInput = 0f;
             }
 
             if (gearState != GearState.Changing)
@@ -232,14 +228,16 @@ public class CarInputController : MonoBehaviour
         car.ChangeSpeed(currentTorque, Forwards);
         car.Turn(Steering);
 
-        /*if (brakeInput > 0f)
+        if (brakeInput > 0f)
         {
+            brakeLight.SetColor("_Color", Color.red * 10);
             car.activatebrake(braking);
         }
         else
         {
+            brakeLight.SetColor("_Color", Color.red);
             car.disablebrake(braking);
-        }*/
+        }
 
 
         if (Input.GetKey(KeyCode.Alpha1))
