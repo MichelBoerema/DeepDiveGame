@@ -49,12 +49,11 @@ public class timer : MonoBehaviour
 
             Ltime.text = string.Format("{0:00}:{1:00}:{2:000}",minutes,seconds,millisecs);
         }
-        if (lasttime < besttime && lapcount > 1)
+        if (lasttime < besttime && lapcount > 0)
         {
             besttime = lasttime;
             LtimeBest.text = string.Format("Best: " + "{0:00}:{1:00}:{2:000}", minutes, seconds, millisecs);
         }
-
         laps.text = "lap: " + lapcount.ToString() + "/3 ";
     }
 }
