@@ -1,10 +1,10 @@
 using System.Collections;
-using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
+using System;
+
 public enum GearState
 {
     Neutral,
@@ -29,12 +29,15 @@ public class CarInputController : MonoBehaviour
     public float handBrake;
 
     public GameObject[] cameras;
+    [SerializeField] private GameObject pauseMenu;
+    [SerializeField] private Transform pitsTransform;
 
     public float RPM;
     public float redLine;
     public float idleRPM;
     public TMP_Text rpmText;
     public TMP_Text gearText;
+    public TMP_Text kphText;
     public Slider rpmSlider;
 
     public float[] gearRatios;
@@ -56,6 +59,9 @@ public class CarInputController : MonoBehaviour
     public Material brakeLight;
     private bool isChangingGears;
 
+    [Header("tracklimits")]
+    public Rigidbody target;
+    [SerializeField] GameObject Warning_lable;
     void Awake()
     {
         currentGear = 1;
@@ -222,9 +228,15 @@ public class CarInputController : MonoBehaviour
             }
         }
 
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            TogglePauseMenu(!pauseMenu.activeInHierarchy);
+        }
+
         rpmSlider.value = RPM;
         rpmText.text = RPM.ToString("0,000") + "rpm";
         gearText.text = currentGear == 1 ? "N" : currentGear == 0 ? "R" : (currentGear - 1).ToString();
+        kphText.text = car.currentspeed.ToString("000") + "kp/h";
 
         currentTorque = CalculateTorque();
         car.ChangeSpeed(currentTorque, Forwards);
@@ -315,7 +327,7 @@ public class CarInputController : MonoBehaviour
         {
             if (clutch < 0.1f)
             {
-                RPM = Mathf.Lerp(RPM, Mathf.Max(idleRPM, redLine * Forwards) + Random.Range(-50, 50), Time.deltaTime);
+                RPM = Mathf.Lerp(RPM, Mathf.Max(idleRPM, redLine * Forwards) + UnityEngine.Random.Range(-50, 50), Time.deltaTime);
             }
             else
             {
@@ -366,27 +378,34 @@ public class CarInputController : MonoBehaviour
         if (gearState != GearState.Neutral)
             gearState = GearState.Running;
     }
-    //IEnumerator ChangeGear(int gearChange)
-    //{
-    //    gearState = GearState.CheckingChange;
-    //    if (currentGear + gearChange >= 0)
-    //    {
-    //        if (gearChange > 0)
-    //        {
-    //            //increase the gear
-    //            gearState = GearState.Running;
-    //        }
-    //        if (gearChange < 0)
-    //        {
-    //            //decrease the gear
-    //            gearState = GearState.Running;
-    //        }
-    //        gearState = GearState.Changing;
-    //        yield return new WaitForSeconds(changeGearTime);
-    //        currentGear += gearChange;
-    //    }
+    public void OnCollisionEnter(Collision collision)
+    {
+        print(collision.gameObject.tag);
 
-    //    if (gearState != GearState.Neutral)
-    //        gearState = GearState.Running;
-    //}
+        if (collision.gameObject.tag == "Grass")
+        {
+            Debug.Log("Je moeder");
+            target.drag = 0.5F;
+            Warning_lable.SetActive(true);
+        }
+        else
+        {
+            target.drag = 0.0F;
+            Warning_lable.SetActive(false);
+        }
+    }
+    private void TogglePauseMenu(bool active)
+    {
+        pauseMenu.SetActive(active);
+    }
+
+    public void ClosePauseMenu()
+    {
+        pauseMenu.SetActive(false);
+    }
+
+    public void BackToPits()
+    {
+        gameObject.transform.position = pitsTransform.position;
+    }
 }

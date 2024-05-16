@@ -23,12 +23,7 @@ public class Car : MonoBehaviour
 
     public Wheel[] wheels;
 
-    [Header("Speedometer")]
-    public Rigidbody target;
 
-    [Header("UI")]
-    public RectTransform arrow; // The arrow in the speedometer
-    [SerializeField] GameObject Warning_lable;
 
     private float speed = 0.0f;
 
@@ -112,23 +107,6 @@ public class Car : MonoBehaviour
         currentspeed = (lastPosition - transform.position).magnitude / Time.deltaTime * 4f;
     }
 
-    public void OnCollisionEnter(Collision collision)
-    {
-        print(collision.gameObject.tag);
-
-        if (collision.gameObject.tag == "Grass")
-        {
-            Debug.Log("Je moeder");
-            target.drag = 0.5F;
-            Warning_lable.SetActive(true);
-        }
-        else
-        {
-            target.drag = 0.0F;
-            Warning_lable.SetActive(false);
-        }
-
-
-    }
+    
 
 }

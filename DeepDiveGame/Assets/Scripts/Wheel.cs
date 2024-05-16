@@ -8,7 +8,7 @@ public class Wheel : MonoBehaviour
     public bool Invertsteer;
     public bool Power;
     public bool brake;
-    public float brakeForce = 100f;
+    public float brakeForce = 0f;
     public float Steerangle { get; set; }
     public float Torque { get; set; }
 
