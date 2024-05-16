@@ -9,6 +9,7 @@ public class Car : MonoBehaviour
 {
     public float maxFuelInSeconds = 180f;
     public float fuelAmount;
+    public float health;
 
     //public Transform centerOfMass;
     public float motorTorque = 500f;
@@ -18,6 +19,8 @@ public class Car : MonoBehaviour
     public float steer { get; set; }
     public float throttle { get; set; }
     public Rigidbody _rigidbody;
+    private Vector3 unpauseVelocity;
+
     public Wheel[] wheels;
 
     [Header("Speedometer")]
@@ -49,6 +52,22 @@ public class Car : MonoBehaviour
         //    speedSlider.value = currentspeed;
         //    //arrow.localEulerAngles =
         //    //    new Vector3(0, 0, Mathf.Lerp(minSpeedArrowAngle, maxSpeedArrowAngle, speed / maxSpeed));
+
+        if (Settings.paused && _rigidbody.isKinematic != true)
+        {
+            unpauseVelocity = _rigidbody.velocity;
+            _rigidbody.isKinematic = true;
+        }
+        else if (!Settings.paused && _rigidbody.isKinematic == true)
+        {
+            _rigidbody.isKinematic = false;
+            _rigidbody.velocity = unpauseVelocity;
+        }
+    }
+
+    private void FixedUpdate()
+    {
+        fuelAmount = Mathf.MoveTowards(fuelAmount, 0, Time.deltaTime);
     }
 
     public void ChangeSpeed(float throttle, float input)

@@ -116,18 +116,16 @@ public class CarInputController : MonoBehaviour
             Forwards = Input.GetAxis("Vertical");
             Steering = Input.GetAxis("Horizontal");
 
-            if (Input.GetKey(KeyCode.S))
+            if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.Space))
             {
-                car.activatebrake(braking);
-            }
-            else
-            {
-                car.disablebrake(braking);
-            }
-
-            if (Input.GetKey(KeyCode.Space))
-            {
-                car.activatebrake(handBrake);
+                if (Input.GetKey(KeyCode.S))
+                {
+                    car.activatebrake(braking);
+                }
+                if (Input.GetKey(KeyCode.Space))
+                {
+                    car.activatebrake(handBrake);
+                }
             }
             else
             {
@@ -250,14 +248,14 @@ public class CarInputController : MonoBehaviour
         car.ChangeSpeed(currentTorque, Forwards);
         car.Turn(Steering);
 
-        if (brakeInput > 0f)
+        /*if (brakeInput > 0f)
         {
             car.activatebrake(braking);
         }
         else
         {
             car.disablebrake(braking);
-        }
+        }*/
 
 
         if (Input.GetKey(KeyCode.Alpha1))
