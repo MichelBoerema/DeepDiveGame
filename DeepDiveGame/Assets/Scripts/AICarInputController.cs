@@ -19,6 +19,8 @@ public class AICarInputController : MonoBehaviour
     public float idleRPM = 1000f;
     public float gearChangeTime = 1f;
 
+    public float timer = 0f;
+
     private void Start()
     {
         car = GetComponent<Car>();
@@ -93,6 +95,19 @@ public class AICarInputController : MonoBehaviour
         float targetSpeed = distanceToTarget > 10 ? 1f : 0.5f;
         car.ChangeSpeed(CalculateTorque(targetSpeed), forward);
         car.Turn(localTarget.x / localTarget.magnitude);
+
+        timer -= Time.deltaTime;
+        if (timer >= 3f)
+        {
+            timer =- 3f;
+            agent.speed =+ 1;
+            if (agent.speed == 30)
+            {
+                agent.speed = -1;
+            }
+        }
+
+            
     }
 
     private void GoToNextCheckpoint()
