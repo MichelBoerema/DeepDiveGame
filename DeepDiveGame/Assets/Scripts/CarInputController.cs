@@ -54,9 +54,11 @@ public class CarInputController : MonoBehaviour
     [SerializeField] private bool usingWheel = false;
 
     public Material brakeLight;
+    private bool isChangingGears;
 
     void Awake()
     {
+        currentGear = 1;
         car = GetComponent<Car>();
         controls = new WheelControl();
         controls.Controller.ShiftUp.performed += ctx => StartCoroutine(ChangeGear(1));
@@ -222,7 +224,7 @@ public class CarInputController : MonoBehaviour
 
         rpmSlider.value = RPM;
         rpmText.text = RPM.ToString("0,000") + "rpm";
-        gearText.text = (gearState == GearState.Neutral) ? "N" : (currentGear + 1).ToString();
+        gearText.text = currentGear == 1 ? "N" : currentGear == 0 ? "R" : (currentGear - 1).ToString();
 
         currentTorque = CalculateTorque();
         car.ChangeSpeed(currentTorque, Forwards);
@@ -331,25 +333,60 @@ public class CarInputController : MonoBehaviour
     }
     IEnumerator ChangeGear(int gearChange)
     {
+        isChangingGears = true;
         gearState = GearState.CheckingChange;
         if (currentGear + gearChange >= 0)
         {
             if (gearChange > 0)
             {
+                if (currentGear < gearRatios.Length - 1)
+                {
+                    gearState = GearState.Changing;
+                    yield return new WaitForSeconds(changeGearTime);
+                    currentGear += gearChange;
+                    gearState = GearState.Running;
+                    //StartCoroutine(DecreaseRPMOverTime());
+                }
                 //increase the gear
-                gearState = GearState.Running;
             }
             if (gearChange < 0)
             {
+                if (currentGear > 0)
+                {
+                    gearState = GearState.Changing;
+                    yield return new WaitForSeconds(changeGearTime);
+                    currentGear += gearChange;
+                    gearState = GearState.Running;
+                    //StartCoroutine(DecreaseRPMOverTime());
+                }
                 //decrease the gear
-                gearState = GearState.Running;
             }
-            gearState = GearState.Changing;
-            yield return new WaitForSeconds(changeGearTime);
-            currentGear += gearChange;
         }
-
+        isChangingGears = false;
         if (gearState != GearState.Neutral)
             gearState = GearState.Running;
     }
+    //IEnumerator ChangeGear(int gearChange)
+    //{
+    //    gearState = GearState.CheckingChange;
+    //    if (currentGear + gearChange >= 0)
+    //    {
+    //        if (gearChange > 0)
+    //        {
+    //            //increase the gear
+    //            gearState = GearState.Running;
+    //        }
+    //        if (gearChange < 0)
+    //        {
+    //            //decrease the gear
+    //            gearState = GearState.Running;
+    //        }
+    //        gearState = GearState.Changing;
+    //        yield return new WaitForSeconds(changeGearTime);
+    //        currentGear += gearChange;
+    //    }
+
+    //    if (gearState != GearState.Neutral)
+    //        gearState = GearState.Running;
+    //}
 }
