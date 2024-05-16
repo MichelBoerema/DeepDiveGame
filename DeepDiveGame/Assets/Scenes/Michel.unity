@@ -1708,6 +1708,14 @@ PrefabInstance:
       propertyPath: m_FollowOffset.y
       value: 0.86
       objectReference: {fileID: 0}
+    - target: {fileID: 2183840677861158766, guid: 2d082e3d2cf505642b92eb77f5cbaea6, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2183840677861158766, guid: 2d082e3d2cf505642b92eb77f5cbaea6, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2877649198668794281, guid: 2d082e3d2cf505642b92eb77f5cbaea6, type: 3}
       propertyPath: m_WheelDampingRate
       value: 10
@@ -1902,7 +1910,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6113551498196386918, guid: 2d082e3d2cf505642b92eb77f5cbaea6, type: 3}
       propertyPath: braking
-      value: 100
+      value: 800
       objectReference: {fileID: 0}
     - target: {fileID: 6113551498196386918, guid: 2d082e3d2cf505642b92eb77f5cbaea6, type: 3}
       propertyPath: handBrake

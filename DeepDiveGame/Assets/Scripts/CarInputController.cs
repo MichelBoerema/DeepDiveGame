@@ -153,25 +153,9 @@ public class CarInputController : MonoBehaviour
         if (usingController)
         {
             Steering = Input.GetAxis("Horizontal");
-            float inputR2 = GetForward();
-            if (inputR2 < 0)
-            {
-                Forwards = 0;
-            }
-            else if (inputR2 > 0)
-            {
-                Forwards = inputR2;
-            }
+            Forwards = GetForward();
 
-            float inputL2 = GetBrake();
-            if (inputL2 < 1)
-            {
-                brakeInput = 0;
-            }
-            else if (inputL2 > 0)
-            {
-                brakeInput = inputL2;
-            }
+            brakeInput = GetBrake();
 
             if (gearState != GearState.Changing)
             {
