@@ -82,14 +82,14 @@ public class CarInputController : MonoBehaviour
         currentTorque = CalculateTorque();
         car.ChangeSpeed(currentTorque, Forwards);
         car.Turn(Steering);
-        //if (Input.GetKey(KeyCode.S))
-        //{
-        //    car.activatebrake(braking);
-        //}
-        //else
-        //{
-        //    car.disablebrake(braking);
-        //}
+        if (Input.GetKey(KeyCode.S))
+        {
+            car.activatebrake(braking);
+        }
+        else
+        {
+            car.disablebrake(braking);
+        }
         if (Input.GetKey(KeyCode.S))
         {
             car.activatebrake(braking);
