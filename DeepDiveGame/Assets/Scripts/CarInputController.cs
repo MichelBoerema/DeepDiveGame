@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-
+using UnityEngine.InputSystem;
 public enum GearState
 {
     Neutral,
@@ -13,6 +13,13 @@ public enum GearState
 };
 public class CarInputController : MonoBehaviour
 {
+    private WheelControl controls;
+    public PlayerInput playerInput;
+    private LogitechGSDK.LogiControllerPropertiesData properties;
+    [SerializeField] private Vector2 steerVector2;
+    public float xAxis, gasInput, brakeInput, clutchInput;
+    public int currentGear;
+
     Car car;
 
     public float Forwards;
@@ -28,14 +35,11 @@ public class CarInputController : MonoBehaviour
     public TMP_Text rpmText;
     public TMP_Text gearText;
     public Slider rpmSlider;
-    public int currentGear;
-
-    public Slider fuelSlider;
 
     public float[] gearRatios;
     public float differentialRatio;
     private float currentTorque;
-    private float clutch;
+    public float clutch;
     public int isEngineRunning;
     private float wheelRPM;
     public AnimationCurve hpToRPMCurve;
@@ -44,50 +48,209 @@ public class CarInputController : MonoBehaviour
     public float decreaseGearRPM;
     public float changeGearTime = 0.5f;
 
+    [SerializeField] private bool usingKeyBoard = true;
+    [SerializeField] private bool usingController = false;
+    [SerializeField] private bool usingWheel = false;
+
     void Awake()
     {
         car = GetComponent<Car>();
-        fuelSlider.maxValue = car.maxFuelInSeconds;
+        controls = new WheelControl();
+        controls.Controller.ShiftUp.performed += ctx => StartCoroutine(ChangeGear(1));
+        controls.Controller.ShiftDown.performed += ctx => StartCoroutine(ChangeGear(-1));
+
+        controls.Controller.Steer.performed += ctx => steerVector2 = ctx.ReadValue<Vector2>();
+        controls.Controller.Steer.canceled += ctx => steerVector2 = Vector2.zero;
+
+        controls.Controller.Accelerate.performed += ctx => Forwards = ctx.ReadValue<float>();
+
+        LogitechGSDK.LogiSteeringInitialize(false);
+    }
+
+    float GetForward() => playerInput.actions["Accelerate"].ReadValue<float>();
+    float GetBrake() => playerInput.actions["Brake"].ReadValue<float>();
+    float GetShiftUp() => playerInput.actions["ShiftUp"].ReadValue<float>();
+    float GetShiftDown() => playerInput.actions["ShiftDown"].ReadValue<float>();
+
+    float GetClutch()
+    {
+        //return playerInput.actions["Clutch"].ReadValue<float>();
+        if (playerInput.actions["Clutch"].ReadValue<float>() == 0)
+        {
+            return 1;
+        }
+        else
+        {
+            return 0;
+        }
+    }
+    
+
+    public void HandleInputData(int val)
+    {
+        if (val == 0)
+        {
+            usingKeyBoard = true;
+            usingController = false;
+            usingWheel = false;
+        }
+        if (val == 1)
+        {
+            usingController = true;
+            usingWheel = false;
+            usingKeyBoard = false;
+        }
+        if (val == 2)
+        {
+            usingWheel = true;
+            usingKeyBoard = false;
+            usingController = false;
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (usingKeyBoard)
+        {
+            Forwards = Input.GetAxis("Vertical");
+            Steering = Input.GetAxis("Horizontal");
+
+            if (Input.GetKey(KeyCode.S))
+            {
+                car.activatebrake(braking);
+            }
+            else
+            {
+                car.disablebrake(braking);
+            }
+
+            if (Input.GetKey(KeyCode.Space))
+            {
+                car.activatebrake(handBrake);
+            }
+            else
+            {
+                car.disablebrake(handBrake);
+            }
+
+            if (gearState != GearState.Changing)
+            {
+                if (gearState == GearState.Neutral)
+                {
+                    clutch = 0f;
+                    if (Mathf.Abs(Forwards) > 0) gearState = GearState.Running;
+                }
+                else
+                {
+                    clutch = Input.GetKey(KeyCode.LeftShift) ? 0 : Mathf.Lerp(clutch, 1, Time.deltaTime);
+                }
+            }
+            else
+            {
+                clutch = 0;
+            }
+        }
+
+        if (usingController)
+        {
+            Steering = Input.GetAxis("Horizontal");
+            float inputR2 = GetForward();
+            if (inputR2 < 0)
+            {
+                Forwards = 0;
+            }
+            else if (inputR2 > 0)
+            {
+                Forwards = inputR2;
+            }
+
+            float inputL2 = GetBrake();
+            if (inputL2 < 1)
+            {
+                brakeInput = 0;
+            }
+            else if (inputL2 > 0)
+            {
+                brakeInput = inputL2;
+            }
+
+            if (gearState != GearState.Changing)
+            {
+                if (gearState == GearState.Neutral)
+                {
+                    clutch = 0f;
+                    if (Mathf.Abs(Forwards) > 0) gearState = GearState.Running;
+                }
+                else
+                {
+                    clutch = GetClutch();
+                }
+            }
+            else
+            {
+                clutch = 0;
+            }
+        }
+
+        if (usingWheel)
+        {
+            if (LogitechGSDK.LogiUpdate() && LogitechGSDK.LogiIsConnected(0))
+            {
+                LogitechGSDK.DIJOYSTATE2ENGINES rec;
+                rec = LogitechGSDK.LogiGetStateCSharp(0);
+
+                Steering = rec.lX / 32767f;
+
+                if (rec.lY > 0)
+                {
+                    Forwards = 0;
+                }
+                else if (rec.lY < 0)
+                {
+                    Forwards = rec.lY / -32768f;
+                }
+
+                if (rec.lRz > 0)
+                {
+                    brakeInput = 0;
+                }
+                else if (rec.lRz < 0)
+                {
+                    brakeInput = rec.lRz / -32768f;
+                }
+
+                if (gearState != GearState.Changing)
+                {
+                    if (gearState == GearState.Neutral)
+                    {
+                        clutch = 0f;
+                        if (Mathf.Abs(Forwards) > 0) gearState = GearState.Running;
+                    }
+                }
+                else
+                {
+                    if (rec.rglSlider[0] > 0)
+                    {
+                        clutch = 1;
+                    }
+                    else if (rec.rglSlider[0] < 0)
+                    {
+                        clutch = rec.rglSlider[0] / -32768f - 1;
+                    }
+                }
+            }
+        }
+
         rpmSlider.value = RPM;
         rpmText.text = RPM.ToString("0,000") + "rpm";
         gearText.text = (gearState == GearState.Neutral) ? "N" : (currentGear + 1).ToString();
 
-        Forwards = Input.GetAxis("Vertical");
-        Steering = Input.GetAxis("Horizontal");
-        if (gearState != GearState.Changing)
-        {
-            if (gearState == GearState.Neutral)
-            {
-                clutch = 0;
-                if (Mathf.Abs(Forwards) > 0) gearState = GearState.Running;
-            }
-            else
-            {
-                clutch = Input.GetKey(KeyCode.LeftShift) ? 0 : Mathf.Lerp(clutch, 1, Time.deltaTime);
-            }
-        }
-        else
-        {
-            clutch = 0;
-        }
-
         currentTorque = CalculateTorque();
         car.ChangeSpeed(currentTorque, Forwards);
         car.Turn(Steering);
-        //if (Input.GetKey(KeyCode.S))
-        //{
-        //    car.activatebrake(braking);
-        //}
-        //else
-        //{
-        //    car.disablebrake(braking);
-        //}
-        if (Input.GetKey(KeyCode.S))
+
+        if (brakeInput > 0f)
         {
             car.activatebrake(braking);
         }
@@ -105,7 +268,7 @@ public class CarInputController : MonoBehaviour
                 }
                 cameras[0].SetActive(true);
             }
-            if (Input.GetKey(KeyCode.Alpha2))
+        if (Input.GetKey(KeyCode.Alpha2))
             {
                 foreach (GameObject cam in cameras)
                 {
@@ -113,7 +276,7 @@ public class CarInputController : MonoBehaviour
                 }
                 cameras[1].SetActive(true);
             }
-            if (Input.GetKey(KeyCode.Alpha3))
+        if (Input.GetKey(KeyCode.Alpha3))
             {
                 foreach (GameObject cam in cameras)
                 {
@@ -121,7 +284,7 @@ public class CarInputController : MonoBehaviour
                 }
                 cameras[2].SetActive(true);
             }
-            if (Input.GetKey(KeyCode.Alpha4))
+        if (Input.GetKey(KeyCode.Alpha4))
             {
                 foreach (GameObject cam in cameras)
                 {
@@ -129,12 +292,6 @@ public class CarInputController : MonoBehaviour
                 }
                 cameras[3].SetActive(true);
             }
-    }
-
-    private void FixedUpdate()
-    {
-        car.fuelAmount = Mathf.MoveTowards(car.fuelAmount, 0, Time.deltaTime);
-        fuelSlider.value = car.fuelAmount;
     }
 
     float CalculateTorque()
@@ -146,13 +303,30 @@ public class CarInputController : MonoBehaviour
         }
         if (gearState == GearState.Running && clutch > 0)
         {
-            if (Input.GetKeyDown(KeyCode.E)/*RPM > increaseGearRPM*/)
+            if (usingKeyBoard)
             {
-                StartCoroutine(ChangeGear(1));
+                if (Input.GetKeyDown(KeyCode.E)/*RPM > increaseGearRPM*/)
+                {
+                    StartCoroutine(ChangeGear(1));
+                }
+                else if (Input.GetKeyDown(KeyCode.Q)/*RPM < decreaseGearRPM*/)
+                {
+                    StartCoroutine(ChangeGear(-1));
+                }
             }
-            else if (Input.GetKeyDown(KeyCode.Q)/*RPM < decreaseGearRPM*/)
+
+            if (usingController)
             {
-                StartCoroutine(ChangeGear(-1));
+                float inputR1 = GetShiftUp();
+                float inputL1 = GetShiftDown();
+                if (inputR1 > 0)
+                {
+                    StartCoroutine(ChangeGear(1));
+                }
+                if (inputL1 > 0)
+                {
+                    StartCoroutine(ChangeGear(-1));
+                }
             }
         }
         if (isEngineRunning > 0)
