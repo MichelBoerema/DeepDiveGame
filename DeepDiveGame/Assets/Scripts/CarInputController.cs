@@ -1,10 +1,11 @@
 using System.Collections;
-using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
+using System;
+using UnityEngine.SceneManagement;
+
 public enum GearState
 {
     Neutral,
@@ -21,7 +22,7 @@ public class CarInputController : MonoBehaviour
     public float xAxis, gasInput, brakeInput, clutchInput;
     public int currentGear;
 
-    Car car;
+    public Car car;
 
     public float Forwards;
     public float Steering;
@@ -29,12 +30,15 @@ public class CarInputController : MonoBehaviour
     public float handBrake;
 
     public GameObject[] cameras;
+    [SerializeField] private GameObject pauseMenu;
+    [SerializeField] private Transform pitsTransform;
 
     public float RPM;
     public float redLine;
     public float idleRPM;
     public TMP_Text rpmText;
     public TMP_Text gearText;
+    public TMP_Text kphText;
     public Slider rpmSlider;
 
     public float[] gearRatios;
@@ -54,9 +58,14 @@ public class CarInputController : MonoBehaviour
     [SerializeField] private bool usingWheel = false;
 
     public Material brakeLight;
+    private bool isChangingGears;
 
+    [Header("tracklimits")]
+    public Rigidbody target;
+    [SerializeField] GameObject Warning_lable;
     void Awake()
     {
+        currentGear = 1;
         car = GetComponent<Car>();
         controls = new WheelControl();
         controls.Controller.ShiftUp.performed += ctx => StartCoroutine(ChangeGear(1));
@@ -91,6 +100,7 @@ public class CarInputController : MonoBehaviour
 
     public void HandleInputData(int val)
     {
+        Debug.Log("Dropdown changed");
         if (val == 0)
         {
             usingKeyBoard = true;
@@ -110,8 +120,6 @@ public class CarInputController : MonoBehaviour
             usingController = false;
         }
     }
-
-    // Update is called once per frame
     void Update()
     {
         if (usingKeyBoard)
@@ -220,9 +228,15 @@ public class CarInputController : MonoBehaviour
             }
         }
 
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            TogglePauseMenu(!pauseMenu.activeInHierarchy);
+        }
+
         rpmSlider.value = RPM;
         rpmText.text = RPM.ToString("0,000") + "rpm";
-        gearText.text = (gearState == GearState.Neutral) ? "N" : (currentGear + 1).ToString();
+        gearText.text = currentGear == 1 ? "N" : currentGear == 0 ? "R" : (currentGear - 1).ToString();
+        kphText.text = car.currentspeed.ToString("000") + "kp/h";
 
         currentTorque = CalculateTorque();
         car.ChangeSpeed(currentTorque, Forwards);
@@ -313,7 +327,7 @@ public class CarInputController : MonoBehaviour
         {
             if (clutch < 0.1f)
             {
-                RPM = Mathf.Lerp(RPM, Mathf.Max(idleRPM, redLine * Forwards) + Random.Range(-50, 50), Time.deltaTime);
+                RPM = Mathf.Lerp(RPM, Mathf.Max(idleRPM, redLine * Forwards) + UnityEngine.Random.Range(-50, 50), Time.deltaTime);
             }
             else
             {
@@ -331,25 +345,73 @@ public class CarInputController : MonoBehaviour
     }
     IEnumerator ChangeGear(int gearChange)
     {
+        isChangingGears = true;
         gearState = GearState.CheckingChange;
         if (currentGear + gearChange >= 0)
         {
             if (gearChange > 0)
             {
+                if (currentGear < gearRatios.Length - 1)
+                {
+                    gearState = GearState.Changing;
+                    yield return new WaitForSeconds(changeGearTime);
+                    currentGear += gearChange;
+                    gearState = GearState.Running;
+                    //StartCoroutine(DecreaseRPMOverTime());
+                }
                 //increase the gear
-                gearState = GearState.Running;
             }
             if (gearChange < 0)
             {
+                if (currentGear > 0)
+                {
+                    gearState = GearState.Changing;
+                    yield return new WaitForSeconds(changeGearTime);
+                    currentGear += gearChange;
+                    gearState = GearState.Running;
+                    //StartCoroutine(DecreaseRPMOverTime());
+                }
                 //decrease the gear
-                gearState = GearState.Running;
             }
-            gearState = GearState.Changing;
-            yield return new WaitForSeconds(changeGearTime);
-            currentGear += gearChange;
         }
-
+        isChangingGears = false;
         if (gearState != GearState.Neutral)
             gearState = GearState.Running;
+    }
+    public void OnCollisionEnter(Collision collision)
+    {
+        print(collision.gameObject.tag);
+
+        if (collision.gameObject.tag == "Grass")
+        {
+            Debug.Log("Je moeder");
+            target.drag = 0.5F;
+            Warning_lable.SetActive(true);
+        }
+        else
+        {
+            target.drag = 0.0F;
+            Warning_lable.SetActive(false);
+        }
+    }
+    private void TogglePauseMenu(bool active)
+    {
+        pauseMenu.SetActive(active);
+    }
+
+    public void ClosePauseMenu()
+    {
+        pauseMenu.SetActive(false);
+    }
+
+    public void BackToPits()
+    {
+        gameObject.transform.position = pitsTransform.position;
+    }
+
+    public void Main_QuitToMainMenu()
+    {
+        print("Loading Game Scene");
+        SceneManager.LoadScene("KevinMenu", LoadSceneMode.Single);
     }
 }

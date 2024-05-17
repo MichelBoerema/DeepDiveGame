@@ -35,7 +35,7 @@ public class mainMenu : MonoBehaviour
     public void Main_StartGameButton()
     {
         print("Loading Game Scene");
-        SceneManager.LoadScene("KevinGame", LoadSceneMode.Single);
+        SceneManager.LoadScene("MainScene", LoadSceneMode.Single);
     }
     public void Main_QuitButton()
     {
