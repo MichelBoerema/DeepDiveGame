@@ -3188,9 +3188,9 @@ MonoBehaviour:
   m_Value: 0
   m_Options:
     m_Options:
-    - m_Text: Keyboard
-      m_Image: {fileID: 0}
     - m_Text: Controller
+      m_Image: {fileID: 0}
+    - m_Text: Keyboard
       m_Image: {fileID: 0}
     - m_Text: Wheel
       m_Image: {fileID: 0}
@@ -3707,7 +3707,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Keyboard
+  m_text: Controller
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -8281,6 +8281,14 @@ PrefabInstance:
       propertyPath: pitsTransform
       value: 
       objectReference: {fileID: 1448274637}
+    - target: {fileID: 6113551498196386918, guid: 2d082e3d2cf505642b92eb77f5cbaea6, type: 3}
+      propertyPath: usingKeyBoard
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6113551498196386918, guid: 2d082e3d2cf505642b92eb77f5cbaea6, type: 3}
+      propertyPath: usingController
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8361111076137267793, guid: 2d082e3d2cf505642b92eb77f5cbaea6, type: 3}
       propertyPath: m_Name
       value: Porche GT2 rs
