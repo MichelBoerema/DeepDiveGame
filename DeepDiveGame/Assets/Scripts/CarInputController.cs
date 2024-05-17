@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using System;
+using UnityEngine.SceneManagement;
 
 public enum GearState
 {
@@ -21,7 +22,7 @@ public class CarInputController : MonoBehaviour
     public float xAxis, gasInput, brakeInput, clutchInput;
     public int currentGear;
 
-    Car car;
+    public Car car;
 
     public float Forwards;
     public float Steering;
@@ -99,6 +100,7 @@ public class CarInputController : MonoBehaviour
 
     public void HandleInputData(int val)
     {
+        Debug.Log("Dropdown changed");
         if (val == 0)
         {
             usingKeyBoard = true;
@@ -118,8 +120,6 @@ public class CarInputController : MonoBehaviour
             usingController = false;
         }
     }
-
-    // Update is called once per frame
     void Update()
     {
         if (usingKeyBoard)
@@ -407,5 +407,11 @@ public class CarInputController : MonoBehaviour
     public void BackToPits()
     {
         gameObject.transform.position = pitsTransform.position;
+    }
+
+    public void Main_QuitToMainMenu()
+    {
+        print("Loading Game Scene");
+        SceneManager.LoadScene("KevinMenu", LoadSceneMode.Single);
     }
 }

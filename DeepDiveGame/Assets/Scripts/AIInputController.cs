@@ -5,7 +5,7 @@ using UnityEngine;
 public class AIInputController : MonoBehaviour
 {
     [Header("Input Variables")]
-    Car car;
+    public Car car;
 
     Wheel wl;
     public float forwards;
