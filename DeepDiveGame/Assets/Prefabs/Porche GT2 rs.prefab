@@ -534,8 +534,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 520273560380323453}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.17236003, y: -1e-45, z: -0, w: 0.98503405}
-  m_LocalPosition: {x: 0, y: 9.320011, z: -15.53443}
+  m_LocalRotation: {x: 0.07618013, y: 0.0008174181, z: 0.010682816, w: 0.9970366}
+  m_LocalPosition: {x: -0.05994092, y: 5.5503435, z: -15.538647}
   m_LocalScale: {x: 3.2824209, y: 3.2824204, z: 3.2824204}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -737,21 +737,21 @@ WheelCollider:
   m_SuspensionSpring:
     spring: 35000
     damper: 4500
-    targetPosition: 0.5
+    targetPosition: 0.2
   m_SuspensionDistance: 0.2
   m_ForceAppPointDistance: 0
   m_Mass: 20
-  m_WheelDampingRate: 0.25
+  m_WheelDampingRate: 10
   m_ForwardFriction:
-    m_ExtremumSlip: 6
+    m_ExtremumSlip: 4
     m_ExtremumValue: 1
     m_AsymptoteSlip: 20
     m_AsymptoteValue: 0.6
-    m_Stiffness: 3
+    m_Stiffness: 10
   m_SidewaysFriction:
-    m_ExtremumSlip: 0.2
+    m_ExtremumSlip: 0.1
     m_ExtremumValue: 1
-    m_AsymptoteSlip: 0.5
+    m_AsymptoteSlip: 0.4
     m_AsymptoteValue: 0.75
     m_Stiffness: 1
   m_IncludeLayers:
@@ -938,21 +938,21 @@ WheelCollider:
   m_SuspensionSpring:
     spring: 35000
     damper: 4500
-    targetPosition: 0.5
+    targetPosition: 0.2
   m_SuspensionDistance: 0.2
   m_ForceAppPointDistance: 0
   m_Mass: 20
-  m_WheelDampingRate: 0.25
+  m_WheelDampingRate: 10
   m_ForwardFriction:
-    m_ExtremumSlip: 6
+    m_ExtremumSlip: 4
     m_ExtremumValue: 1
     m_AsymptoteSlip: 20
     m_AsymptoteValue: 0.6
-    m_Stiffness: 3
+    m_Stiffness: 10
   m_SidewaysFriction:
-    m_ExtremumSlip: 0.2
+    m_ExtremumSlip: 0.1
     m_ExtremumValue: 1
-    m_AsymptoteSlip: 0.5
+    m_AsymptoteSlip: 0.4
     m_AsymptoteValue: 0.75
     m_Stiffness: 1
   m_IncludeLayers:
@@ -1177,9 +1177,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 1
-  m_FollowOffset: {x: 0, y: 2, z: -5.54}
+  m_FollowOffset: {x: 0, y: 0.86, z: -5.54}
   m_XDamping: 1
-  m_YDamping: 0.25
+  m_YDamping: 0
   m_ZDamping: 0
   m_AngularDampingMode: 0
   m_PitchDamping: 0
@@ -1339,8 +1339,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4999778063009554419}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.17236003, y: -1e-45, z: -0, w: 0.98503405}
-  m_LocalPosition: {x: 0, y: 9.320011, z: -15.53443}
+  m_LocalRotation: {x: 0.07618013, y: 0.0008174181, z: 0.010682816, w: 0.9970366}
+  m_LocalPosition: {x: -0.05994092, y: 5.5503435, z: -15.538647}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1503,21 +1503,21 @@ WheelCollider:
   m_SuspensionSpring:
     spring: 35000
     damper: 4500
-    targetPosition: 0.5
+    targetPosition: 0.2
   m_SuspensionDistance: 0.2
   m_ForceAppPointDistance: 0
   m_Mass: 20
-  m_WheelDampingRate: 0.25
+  m_WheelDampingRate: 10
   m_ForwardFriction:
-    m_ExtremumSlip: 6
+    m_ExtremumSlip: 4
     m_ExtremumValue: 1
     m_AsymptoteSlip: 20
     m_AsymptoteValue: 0.6
-    m_Stiffness: 3
+    m_Stiffness: 5
   m_SidewaysFriction:
-    m_ExtremumSlip: 0.2
+    m_ExtremumSlip: 0.1
     m_ExtremumValue: 1
-    m_AsymptoteSlip: 0.5
+    m_AsymptoteSlip: 0.4
     m_AsymptoteValue: 0.75
     m_Stiffness: 1
   m_IncludeLayers:
@@ -1913,7 +1913,7 @@ MeshRenderer:
   - {fileID: -821032122810070051, guid: 12f6c144c82f59241aea1b05cda74471, type: 3}
   - {fileID: 869890484422362421, guid: 12f6c144c82f59241aea1b05cda74471, type: 3}
   - {fileID: -8810858685805774603, guid: 12f6c144c82f59241aea1b05cda74471, type: 3}
-  - {fileID: -9176425909379751293, guid: 12f6c144c82f59241aea1b05cda74471, type: 3}
+  - {fileID: 2100000, guid: 346331b0b9242b1469316e9e610f6fdb, type: 2}
   - {fileID: 3754345688794318078, guid: 12f6c144c82f59241aea1b05cda74471, type: 3}
   - {fileID: 2100000, guid: 43c392c2cdf2799478009f696b46d2ef, type: 2}
   - {fileID: -5437462108887326287, guid: 12f6c144c82f59241aea1b05cda74471, type: 3}
@@ -1924,7 +1924,7 @@ MeshRenderer:
   - {fileID: 2100000, guid: 77f2c3d5934384d47a429c3884d98052, type: 2}
   - {fileID: 2100000, guid: cc123f464b8908f469e27e824e5b6490, type: 2}
   - {fileID: 2100000, guid: 43c392c2cdf2799478009f696b46d2ef, type: 2}
-  - {fileID: 2100000, guid: 77f2c3d5934384d47a429c3884d98052, type: 2}
+  - {fileID: 2100000, guid: 346331b0b9242b1469316e9e610f6fdb, type: 2}
   - {fileID: 3505346385855145427, guid: 12f6c144c82f59241aea1b05cda74471, type: 3}
   - {fileID: 3718666284683117747, guid: 12f6c144c82f59241aea1b05cda74471, type: 3}
   - {fileID: -3935957958291232731, guid: 12f6c144c82f59241aea1b05cda74471, type: 3}
@@ -2014,21 +2014,21 @@ WheelCollider:
   m_SuspensionSpring:
     spring: 35000
     damper: 4500
-    targetPosition: 0.5
+    targetPosition: 0.2
   m_SuspensionDistance: 0.2
   m_ForceAppPointDistance: 0
   m_Mass: 20
-  m_WheelDampingRate: 0.25
+  m_WheelDampingRate: 10
   m_ForwardFriction:
-    m_ExtremumSlip: 6
+    m_ExtremumSlip: 4
     m_ExtremumValue: 1
     m_AsymptoteSlip: 20
     m_AsymptoteValue: 0.6
-    m_Stiffness: 3
+    m_Stiffness: 5
   m_SidewaysFriction:
-    m_ExtremumSlip: 0.2
+    m_ExtremumSlip: 0.1
     m_ExtremumValue: 1
-    m_AsymptoteSlip: 0.5
+    m_AsymptoteSlip: 0.4
     m_AsymptoteValue: 0.75
     m_Stiffness: 1
   m_IncludeLayers:
@@ -2272,6 +2272,7 @@ GameObject:
   - component: {fileID: 6113551498196386918}
   - component: {fileID: 2763035130503387996}
   - component: {fileID: 3944907251619966011}
+  - component: {fileID: 810359590246449375}
   m_Layer: 0
   m_Name: Porche GT2 rs
   m_TagString: Untagged
@@ -2317,8 +2318,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxFuelInSeconds: 180
   fuelAmount: 0
+  health: 0
   motorTorque: 480
-  maxSteer: 30
+  maxSteer: 25
   currentspeed: 0
   brakeForce: 10000
   _rigidbody: {fileID: 0}
@@ -2338,10 +2340,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07210d7d2c079c940b821372d56fb2f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerInput: {fileID: 810359590246449375}
+  steerVector2: {x: 0, y: 0}
+  xAxis: 0
+  gasInput: 0
+  brakeInput: 0
+  clutchInput: 0
+  currentGear: 0
   Forwards: 0
   Steering: 0
-  braking: 0
-  handBrake: 0
+  braking: 400
+  handBrake: 10000
   cameras:
   - {fileID: 4999778063009554419}
   - {fileID: 500530271907246026}
@@ -2353,8 +2362,6 @@ MonoBehaviour:
   rpmText: {fileID: 8239450141613871124}
   gearText: {fileID: 6424254966913269333}
   rpmSlider: {fileID: 5934158195400790836}
-  currentGear: 0
-  fuelSlider: {fileID: 7080491058529809276}
   gearRatios:
   - 3.75
   - 2.381
@@ -2364,6 +2371,7 @@ MonoBehaviour:
   - 0.957
   - 0.844
   differentialRatio: 7.95
+  clutch: 0
   isEngineRunning: 1
   hpToRPMCurve:
     serializedVersion: 2
@@ -2419,6 +2427,10 @@ MonoBehaviour:
   increaseGearRPM: 5500
   decreaseGearRPM: 3300
   changeGearTime: 0.1
+  usingKeyBoard: 1
+  usingController: 0
+  usingWheel: 0
+  brakeLight: {fileID: 2100000, guid: 346331b0b9242b1469316e9e610f6fdb, type: 2}
 --- !u!65 &2763035130503387996
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2467,6 +2479,36 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &810359590246449375
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8361111076137267793}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: 27947e2512fda544586ee48fd318b5f6, type: 3}
+  m_NotificationBehavior: 0
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents: []
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: Controller
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
 --- !u!1 &8401677233772742750
 GameObject:
   m_ObjectHideFlags: 0
